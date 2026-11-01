@@ -32,7 +32,7 @@ def minimum_requirement(integration: Path) -> Requirement:
     specifiers = list(requirement.specifier)
     if (
         len(specifiers) != 1
-        or specifiers[0].operator not in (">=", "==")
+        or specifiers[0].operator != ">="
         or requirement.marker is not None
         or requirement.extras
         or requirement.url is not None

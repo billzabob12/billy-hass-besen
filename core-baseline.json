@@ -4,7 +4,7 @@
   "pull_request": 187382,
   "dependency_override": {
     "baseline": "besen==0.6.1",
-    "development": "besen==0.6.1"
+    "development": "besen>=0.6.1"
   },
   "files": {
     "__init__.py": "1287b011c149c93e4567d0c18bdff39a765f3679e6208877e859c9242c3f620d",

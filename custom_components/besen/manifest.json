@@ -20,7 +20,7 @@
   "issue_tracker": "https://github.com/billzabob12/billy-hass-besen/issues",
   "quality_scale": "platinum",
   "requirements": [
-    "besen==0.6.1"
+    "besen>=0.6.1"
   ],
   "version": "0.6.2"
 }
