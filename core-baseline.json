@@ -4,7 +4,7 @@
   "pull_request": 187382,
   "dependency_override": {
     "baseline": "besen==0.6.1",
-    "development": "besen>=0.6.1"
+    "development": "besen==0.6.1"
   },
   "files": {
     "__init__.py": "1287b011c149c93e4567d0c18bdff39a765f3679e6208877e859c9242c3f620d",
@@ -26,7 +26,7 @@
   },
   "development_overrides": {
     "__init__.py": {
-      "sha256": "d1f66e2d4a18d800748c06188e3f87247aff0e63847d2ef88f82853f47379153",
+      "sha256": "30c4964a77a5c875d0514bb34c6d0bb985a28f043f4521267d0654819e3e9606",
       "reason": "Select the configured LAN or Bluetooth transport and share the UDP listener."
     },
     "config_flow.py": {
@@ -50,7 +50,7 @@
       "reason": "Billy: detect frozen charge telemetry separately from transport heartbeats and recover the read-only LAN session."
     },
     "manifest.json": {
-      "sha256": "d49e8c66337af4689fe5706153c1e3d85f7bd04ea1991fa915a1d980feb2ebff",
+      "sha256": "6140f273a36ff377a28636ef9879e5e1936d13d6535cc74e4b31e71d34336d06",
       "reason": "Billy: detect frozen charge telemetry separately from transport heartbeats and recover the read-only LAN session."
     },
     "quality_scale.yaml": {
@@ -62,7 +62,7 @@
       "reason": "Keep the StateType import available in the supported stable Home Assistant baseline."
     },
     "strings.json": {
-      "sha256": "f989bc2c31b4815658bbd2f62addb61232b67921068c99a330d8f6c18e5e2e26",
+      "sha256": "80e5b68cda3727ca1ce5b0791465570a22be86e98588275868ba85b2b13d726a",
       "reason": "Describe manual LAN setup, verified transport switching and transport-neutral identity errors."
     }
   },
@@ -72,7 +72,7 @@
       "reason": "Reference-count the shared UDP socket for entries and setup flows, closing it after the final user releases it."
     },
     "status_health.py": {
-      "sha256": "e90d6c534b7b8862e653592640b82ed629cfcbfb28ed044beae4f9469db19742",
+      "sha256": "cb3e3c9b0ce594e2aafa2a705de632047246af1f8301e6aacca4f3c548e20b39",
       "reason": "Track genuine immutable charge updates, freshness and bounded recovery."
     }
   }

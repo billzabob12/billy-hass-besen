@@ -1,6 +1,6 @@
 """Distinguish fresh charge reports from metadata and heartbeat traffic."""
 
-from __future__ import annotations  # noqa: UP010
+from __future__ import annotations
 
 import time
 from typing import TYPE_CHECKING
