@@ -44,9 +44,9 @@ async def test_watchdog_never_issues_actuator_commands(
         ),
         patch.object(coordinator, "async_pause_connection", AsyncMock()) as pause,
         patch.object(coordinator, "async_resume_connection", AsyncMock()) as resume,
+        pytest.raises(asyncio.CancelledError),
     ):
-        with pytest.raises(asyncio.CancelledError):
-            await coordinator._async_watch_charge_status()
+        await coordinator._async_watch_charge_status()
     if age == 0:
         client._send_command.assert_not_awaited()
         pause.assert_not_awaited()
