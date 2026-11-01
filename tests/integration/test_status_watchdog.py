@@ -35,9 +35,8 @@ async def test_watchdog_never_issues_actuator_commands(
 ):
     client = Mock(state=charger_state(), _send_command=AsyncMock())
     coordinator = BesenCoordinator(hass, mock_config_entry, client, uses_lan=True)
-    coordinator._charge_health.received = 100 - age
+    coordinator._charge_health = Mock(age=age, recover_due=Mock(return_value=age >= 90))
     with (
-        patch("custom_components.besen.status_health.time.monotonic", return_value=100),
         patch(
             "custom_components.besen.coordinator.asyncio.sleep",
             AsyncMock(side_effect=[None, asyncio.CancelledError()]),
