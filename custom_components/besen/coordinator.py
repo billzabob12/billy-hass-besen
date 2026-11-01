@@ -182,7 +182,7 @@ class BesenCoordinator(DataUpdateCoordinator[BesenData]):
         self._connection_lock = asyncio.Lock()
         self._connection_state = async_get_connection_state(hass, config_entry.entry_id)
         self._uses_lan = uses_lan
-        self._charge_health = ChargeStatusHealth(client.state.charge)
+        self._charge_health = ChargeStatusHealth()
         self._status_watchdog_task: asyncio.Task[None] | None = None
 
     @property
@@ -304,7 +304,7 @@ class BesenCoordinator(DataUpdateCoordinator[BesenData]):
     def _handle_client_update(self, data: BesenData) -> None:
         """Publish a client state update."""
 
-        self._charge_health.observe(data)
+        self._charge_health.observe_live(getattr(self.client, "last_live_status", None))
         self.async_set_updated_data(data)
         assert self.config_entry is not None
         if data.auth_failed and self.config_entry.state is ConfigEntryState.LOADED:

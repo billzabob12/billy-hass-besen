@@ -26,8 +26,8 @@
   },
   "development_overrides": {
     "__init__.py": {
-      "sha256": "30c4964a77a5c875d0514bb34c6d0bb985a28f043f4521267d0654819e3e9606",
-      "reason": "Select the configured LAN or Bluetooth transport and share the UDP listener."
+      "sha256": "c5bced407cfdec37a531e0d59b9eaba4887187120dee5ab75b165cd60c81e786",
+      "reason": "Billy: distinguish live metering from heartbeat/session traffic and recover frozen status."
     },
     "config_flow.py": {
       "sha256": "1de1fd4d92073d032dcaf795fd6db589c5fddc0c93914c0431dad252b8fd3318",
@@ -38,8 +38,8 @@
       "reason": "Name the LAN transport and charger serial configuration fields."
     },
     "coordinator.py": {
-      "sha256": "855ebea8011248ad0c45895adff8f8a4a68bbf7d7c001d519bbb0c7c94663f22",
-      "reason": "Billy: detect frozen charge telemetry separately from transport heartbeats and recover the read-only LAN session."
+      "sha256": "5ddd308cb760638f30f6f474263411a91dd64a414d94e3566be848737e0c025f",
+      "reason": "Billy: distinguish live metering from heartbeat/session traffic and recover frozen status."
     },
     "diagnostics.py": {
       "sha256": "358cf4371121d69170e028805b841426b4dea8083b8e8cab4550bfcc9764143c",
@@ -47,11 +47,11 @@
     },
     "entity.py": {
       "sha256": "ba4e1f2f2610b311af8c27b9793d97b13be3fc85e39b96f8d415027466f571d2",
-      "reason": "Billy: detect frozen charge telemetry separately from transport heartbeats and recover the read-only LAN session."
+      "reason": "Billy: distinguish live metering from heartbeat/session traffic and recover frozen status."
     },
     "manifest.json": {
       "sha256": "6140f273a36ff377a28636ef9879e5e1936d13d6535cc74e4b31e71d34336d06",
-      "reason": "Billy: detect frozen charge telemetry separately from transport heartbeats and recover the read-only LAN session."
+      "reason": "Billy: distinguish live metering from heartbeat/session traffic and recover frozen status."
     },
     "quality_scale.yaml": {
       "sha256": "f53f150a1f673c8a3e04147c56eb9f9ec4afe1c4fe106ea1b5161a80dd4faee5",
@@ -68,12 +68,12 @@
   },
   "development_additions": {
     "lan.py": {
-      "sha256": "8c4760c2fd8b042797cfea08682a592ab1583c52889926ac22314ed5cd464456",
-      "reason": "Reference-count the shared UDP socket for entries and setup flows, closing it after the final user releases it."
+      "sha256": "fe93c9593d24b91979891265b2bd3ff3e62f279238104e36384b03f495beff93",
+      "reason": "Read-only charge telemetry freshness and LAN recovery."
     },
     "status_health.py": {
-      "sha256": "cb3e3c9b0ce594e2aafa2a705de632047246af1f8301e6aacca4f3c548e20b39",
-      "reason": "Track genuine immutable charge updates, freshness and bounded recovery."
+      "sha256": "a8b423e11b01327eb2b7cd48b93689b8170b293243869e6a4cd77837ef03ff79",
+      "reason": "Read-only charge telemetry freshness and LAN recovery."
     }
   }
 }

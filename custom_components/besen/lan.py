@@ -2,14 +2,28 @@
 
 import asyncio
 from dataclasses import dataclass, field
-from typing import cast
+import time
+from typing import Any, cast
 
-from besen.udp import BesenUdpHub
+from besen.udp import BesenUdpClient, BesenUdpHub
 
 from homeassistant.const import EVENT_HOMEASSISTANT_STOP
 from homeassistant.core import Event, HomeAssistant, callback
 
 from .const import DOMAIN
+
+
+class BesenTelemetryUdpClient(BesenUdpClient):
+    """Stamp only live metering packets, never heartbeats or session summaries."""
+
+    last_live_status: float | None = None
+
+    def _update_charge_status(
+        self, command: int, data: bytes, values: dict[str, Any]
+    ) -> None:
+        if command in (4, 13):
+            self.last_live_status = time.monotonic()
+        super()._update_charge_status(command, data, values)
 
 
 @dataclass

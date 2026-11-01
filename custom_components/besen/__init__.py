@@ -4,7 +4,6 @@ import logging
 
 from besen.client import BesenClient
 from besen.exceptions import CannotConnect, InvalidAuth
-from besen.udp import BesenUdpClient
 from bleak.backends.device import BLEDevice
 
 from homeassistant.components import bluetooth
@@ -18,7 +17,7 @@ from homeassistant.helpers.typing import ConfigType
 
 from .const import CONF_SERIAL, CONF_TRANSPORT, DOMAIN, PLATFORMS, TRANSPORT_LAN
 from .coordinator import BesenCoordinator
-from .lan import async_acquire_udp_hub
+from .lan import BesenTelemetryUdpClient as BesenUdpClient, async_acquire_udp_hub
 from .migration import async_migrate_legacy_entry
 from .services import async_setup_services
 

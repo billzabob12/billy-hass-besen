@@ -1,27 +1,19 @@
 """Distinguish fresh charge reports from metadata and heartbeat traffic."""
 
-from __future__ import annotations
-
 import time
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from besen.models import BesenData, ChargeStatus
 
 
 class ChargeStatusHealth:
     """Track immutable charge objects separately from transport availability."""
 
-    def __init__(self, charge: ChargeStatus) -> None:
-        self.charge = charge
+    def __init__(self) -> None:
         self.received = time.monotonic()
         self.last_recovery = float("-inf")
 
-    def observe(self, data: BesenData) -> None:
-        changed = data.charge is not self.charge
-        self.charge = data.charge
-        if changed and data.available and data.authenticated:
-            self.received = time.monotonic()
+    def observe_live(self, stamp: float | None) -> None:
+        """Accept the timestamp of a decoded 0x04/0x0D live metering report."""
+        if isinstance(stamp, (int, float)):
+            self.received = max(self.received, stamp)
 
     @property
     def age(self) -> float:
