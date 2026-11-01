@@ -1,3 +1,9 @@
+# Billy Besen charger reliability
+
+Independent maintenance repository for Billy's BS20 charger. Based on the MIT-licensed moryoav/besen integration; original attribution and history are retained.
+
+Adds genuine charge-report freshness monitoring, read-only status requests after 25 seconds without a report, stale-state unavailability after 90 seconds, and bounded LAN-session recovery. Recovery does not issue start/stop or current commands. The integration domain and entity identifiers remain `besen`, preserving existing history and automation references. Library version is pinned to the tested 0.6.1 API.
+
 # Besen for Home Assistant
 
 [![GitHub Release][release-badge]][release-url]

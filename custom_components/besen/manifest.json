@@ -8,19 +8,19 @@
     }
   ],
   "codeowners": [
-    "@moryoav"
+    "@billzabob12"
   ],
   "config_flow": true,
   "dependencies": [
     "bluetooth_adapters"
   ],
-  "documentation": "https://github.com/moryoav/besen",
+  "documentation": "https://github.com/billzabob12/billy-hass-besen",
   "integration_type": "device",
   "iot_class": "local_push",
-  "issue_tracker": "https://github.com/moryoav/besen/issues",
+  "issue_tracker": "https://github.com/billzabob12/billy-hass-besen/issues",
   "quality_scale": "platinum",
   "requirements": [
-    "besen>=0.6.1"
+    "besen==0.6.1"
   ],
-  "version": "0.6.1"
+  "version": "0.6.2"
 }

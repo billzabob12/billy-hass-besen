@@ -24,6 +24,7 @@ from homeassistant.util import dt as dt_util
 
 from .const import CONF_SERIAL, DOMAIN
 from .lan import async_release_udp_hub
+from .status_health import ChargeStatusHealth
 
 if TYPE_CHECKING:
     from . import BesenConfigEntry
@@ -181,6 +182,36 @@ class BesenCoordinator(DataUpdateCoordinator[BesenData]):
         self._connection_lock = asyncio.Lock()
         self._connection_state = async_get_connection_state(hass, config_entry.entry_id)
         self._uses_lan = uses_lan
+        self._charge_health = ChargeStatusHealth(client.state.charge)
+        self._status_watchdog_task: asyncio.Task[None] | None = None
+
+    @property
+    def status_fresh(self) -> bool:
+        """Do not present heartbeat-only traffic as fresh charging telemetry."""
+        return not self._uses_lan or self._charge_health.fresh
+
+    async def _async_watch_charge_status(self) -> None:
+        while True:
+            await asyncio.sleep(15)
+            if self._shutdown_requested:
+                return
+            if not self.client.state.authenticated:
+                continue
+            try:
+                if self._charge_health.recover_due():
+                    _LOGGER.warning(
+                        "Besen charge telemetry stopped; renewing the LAN session"
+                    )
+                    await self.async_pause_connection()
+                    await self.async_resume_connection()
+                elif self._charge_health.age >= 25:
+                    # Read-only queries supported by the pinned 0.6.1 LAN protocol.
+                    # Heartbeats alone do not prove that status pushes still work.
+                    await self.client._send_command(0x800D, None, name="get_status")
+                    await self.client._send_command(0x8006, None, name="get_session")
+            except Exception:  # Keep recovery alive across a network outage.
+                _LOGGER.warning("Besen telemetry recovery failed", exc_info=True)
+            self.async_update_listeners()
 
     async def async_start(self) -> None:
         """Start listening to charger updates."""
@@ -201,6 +232,10 @@ class BesenCoordinator(DataUpdateCoordinator[BesenData]):
                 await self._async_release_listener()
                 raise
             self.async_set_updated_data(self.client.state)
+            if self._uses_lan and self._status_watchdog_task is None:
+                self._status_watchdog_task = self.hass.async_create_background_task(
+                    self._async_watch_charge_status(), "Besen charge status watchdog"
+                )
 
     @callback
     def _async_validate_identity(self) -> None:
@@ -218,6 +253,11 @@ class BesenCoordinator(DataUpdateCoordinator[BesenData]):
     async def async_shutdown(self) -> None:
         """Stop listening to charger updates."""
 
+        if self._status_watchdog_task is not None:
+            self._status_watchdog_task.cancel()
+            with suppress(asyncio.CancelledError):
+                await self._status_watchdog_task
+            self._status_watchdog_task = None
         await super().async_shutdown()
         if self._remove_listener is not None:
             self._remove_listener()
@@ -264,6 +304,7 @@ class BesenCoordinator(DataUpdateCoordinator[BesenData]):
     def _handle_client_update(self, data: BesenData) -> None:
         """Publish a client state update."""
 
+        self._charge_health.observe(data)
         self.async_set_updated_data(data)
         assert self.config_entry is not None
         if data.auth_failed and self.config_entry.state is ConfigEntryState.LOADED:

@@ -50,4 +50,9 @@ class BesenEntity(CoordinatorEntity[BesenCoordinator]):
         """Return if the entity is available."""
 
         data = self.coordinator.data
-        return super().available and data.available and data.authenticated
+        return (
+            super().available
+            and data.available
+            and data.authenticated
+            and self.coordinator.status_fresh
+        )
